@@ -58,7 +58,6 @@ class Training:
 
 class Running(Training):
     LEN_STEP: float = 0.65
-    M_IN_KM: int = 1000
     CALORIES_MEAN_SPEED_MULTIPLIER: int = 18
     CALORIES_MEAN_SPEED_SHIFT: float = 1.79
     """Тренировка: бег."""
@@ -68,7 +67,7 @@ class Running(Training):
                  * super().get_mean_speed()
                  + self.CALORIES_MEAN_SPEED_SHIFT)
                 * self.weight / self.M_IN_KM
-                * self.duration * 60)
+                * self.duration * self.MIN_IN_H)
 
 
 class SportsWalking(Training):
@@ -76,7 +75,7 @@ class SportsWalking(Training):
     CALORIES_SPEED_HEIGHT_MULTIPLIER: float = 0.029
     KMH_IN_MSEC: float = 0.278
     CM_IN_M: int = 100
-    MIN_IN_H: int = 60
+    DEGREE: int = 2
     """Тренировка: спортивная ходьба."""
     def __init__(self,
                  action: int,
@@ -90,7 +89,7 @@ class SportsWalking(Training):
         return ((self.CALORIES_WEIGHT_MULTIPLIER
                  * self.weight
                  + ((self.get_mean_speed()
-                    * self.KMH_IN_MSEC)**2
+                    * self.KMH_IN_MSEC)**self.DEGREE
                     / (self.height / self.CM_IN_M))
                  * self.CALORIES_SPEED_HEIGHT_MULTIPLIER
                  * self.weight)
